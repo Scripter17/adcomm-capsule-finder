@@ -1,0 +1,67 @@
+body{
+	margin:0;
+	font-family:Courier New;
+}
+#Header{
+	text-align:center;
+}
+
+.ls-button{
+	padding:0.5em;
+	border:2px solid black;
+	background-color:transparent;
+}
+.ls-button:active{
+	background-color:rgba(0,0,0,0.1);
+}
+
+span.prob{display:inline-block;}
+.cap{
+	width:40px;
+	height:29px;
+}
+#cap-add button.cap{
+	background-color:transparent;
+	border:none;
+	margin-bottom:1em;
+}
+#cap-prob .cap{
+	vertical-align:middle;
+	display:inline-block;
+}
+#cap-list .cap{
+	display:inline-block;
+	color:white;
+	text-shadow:1px 1px 0px black, 1px -1px 0px black, -1px 1px 0px black, -1px -1px 0px black;
+	background-repeat:no-repeat;
+	background-position:center;
+	padding:4px;
+	text-align:right;
+	line-height:calc(300%); /* TODO:Figure out why this works */
+}
+.cap.sel{
+	background-color:lime;
+}
+
+.cap-W{background-image:url("Wood.png");}
+.cap-S{background-image:url("Stone.png");}
+.cap-I{background-image:url("Iron.png");}
+.cap-E{background-image:url("Epic.png");}
+.cap-U{background-image:url("Supreme.png");}
+.cap-R{background-image:url("Remove.png"); width:29px; height:29px;}
+.cap-x{background-image:url("Wild.png");}
+
+
+#cap-list .cap{margin:calc((100% - 40px * 20) / 40 - 4px);}
+@media(max-width:1250px){#cap-list .cap{margin:calc((100% - 40px * 15) / 30 - 4px);}}
+@media(max-width:0850px){
+	#cap-list .cap{margin:calc((100% - 40px * 10) / 20 - 4px);}
+	.ls-button{font-size:1.25em;}
+	body{
+		-webkit-user-select:none;
+		-moz-user-select:none;
+		-ms-user-select:none;
+		user-select:none;
+	}
+}
+@media(max-width:0550px){#cap-list .cap{margin:calc((100% - 40px * 5) / 10 - 4px);}}

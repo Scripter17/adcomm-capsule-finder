@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="shortcut icon" type="image/png" href="Supreme.png">
+	<title>AdComm Free Capsule Finder</title>
+	<meta name="viewport" content="width=device-width">
+	<script>
+		window.sequence="SWWWWIWWWWSWWWSWWWWSWWWWSWWWWSWWWWSWWWWSWWWWWSWWWWSWWWWSWWWWWWSWWWSWWWIWWWSWWWSWWWSWWWSWWWSWWWSWWWSWWSWWWWSWWWWSWWWSWWWUWWWSWWWIWWWWSWWWWWSWWWSWWWSWWWWSWWWWSWWWSWWWSWWWWSWWWWSWWSWWWSWWWSWWWWWIWWWSWWWWSWWWWSWWWWSWWWWWWSWWWWSWWWWSWWWWSWWWWEWW";
+		window.capsules=window.location.hash.substr(1,window.location.hash.length-1);
+		window.onload=function(){
+			var i;
+			// Put all the boxes on screen in order
+			for (i=0; i<window.sequence.length; i++){
+				document.getElementById("Boxes").innerHTML+="<b class='add a-"+window.sequence[i]+"'>"+(i+1)+"</b>";
+			}
+			window.boxes=document.querySelectorAll("#Boxes b");
+			render();
+		}
+
+		function render(){
+			var i, ce=document.getElementById("caps"), ni=getNextIndexes(), nt=getNextTypes();
+
+			// Display the current box list
+			ce.innerHTML="";
+			for (i=0; i<window.capsules.length; i++){ce.innerHTML+="<b class='a-"+window.capsules[i]+"'></b>";}
+			if (ni.length!=0){
+				ce.innerHTML+="<br/>";
+				// Display the probability of each possible next box
+				for (var t in nt){
+					ce.innerHTML+="<b class='a a-"+t+"'></b>:"+nt[t]+" ("+(nt[t]/ni.length*100).toFixed(2)+"%)";
+				}
+			}
+
+			// Highlight all possible next boxes
+			window.boxes.forEach(function(v,i){v.classList.remove("sel");})
+			window.boxes.forEach(function(v,i){
+				if (ni.indexOf(i)!=-1){
+					window.boxes[i].classList.add("sel");
+				}
+			})
+		}
+		function addCapsule(s){
+			if (s!="-"){
+				window.capsules+=s;
+			} else {
+				window.capsules=window.capsules.substr(0, window.capsules.length-1);
+			}
+			window.location.hash="#"+window.capsules;
+			render();
+		}
+
+		function getNextIndexes(){
+			var ret=[], i, j, val;
+			if (window.capsules.length==0){return ret;}
+			for (i=0; i<window.sequence.length; i++){ // For all possible starting capsules
+				val=true;
+				for (j=0; j<window.capsules.length; j++){ // For all recorded capsules
+					if (window.capsules[j]!=window.sequence[(i+j)%window.sequence.length]){
+						val=false; // If there's a mismatch, then this isn't a possible starting capsule
+					}
+				}
+				if (val){ret.push((i+window.capsules.length)%window.sequence.length);}
+			}
+			return ret
+		}
+
+		function getNextTypes(){
+			var ret={"W":0, "S":0, "I":0, "E":0, "U":0}, ni=getNextIndexes();
+			for (var i=0; i<ni.length; i++){
+				ret[window.sequence[ni[i]]]+=1;
+			}
+			return ret;
+		}
+	</script>
+	<style>
+		body{
+			margin:0;
+			font-family:Courier New;
+		}
+		#caps .a{
+			vertical-align: middle;
+		}
+		.add, #caps b{
+			width:40px;
+			height:29px;
+		}
+		button.add{
+			background-color:transparent;
+			border:none;
+			margin-bottom:1em;
+		}
+		b.add, #caps b{
+			display:inline-block;
+		}
+		b.sel{
+			background-color:lime;
+		}
+		.a-W{background-image:url("Wood.png");}
+		.a-S{background-image:url("Stone.png");}
+		.a-I{background-image:url("Iron.png");}
+		.a-E{background-image:url("Epic.png");}
+		.a-U{background-image:url("Supreme.png");}
+		.a-R{background-image:url("Remove.png"); width:29px; height:29px;}
+		#Header{
+			text-align:center;
+		}
+		#Boxes b{
+			color:white;
+			text-align:center;
+			text-shadow:1px 1px 0px black, 1px -1px 0px black, -1px 1px 0px black, -1px -1px 0px black;
+			line-height:29px;
+			background-repeat: no-repeat;
+			background-position: center;
+			padding:4px;
+		}
+		@media(max-width:1600px){#Boxes b{margin:calc((100% - 40px * 20) / 40 - 4px);}}
+		@media(max-width:1200px){#Boxes b{margin:calc((100% - 40px * 15) / 30 - 4px);}}
+		@media(max-width:0800px){#Boxes b{margin:calc((100% - 40px * 10) / 20 - 4px);}}
+		@media(max-width:0400px){#Boxes b{margin:calc((100% - 40px * 5) / 10 - 4px);}}
+	</style>
+</head>
+<body>
+<div id="Header">
+	<h1>Adventure Communist Free Capsule Position Locater-Inator</h1>
+	<div id="Buttons">
+		<button class="add a-W" onclick="addCapsule('W')" title="Wood"></button>
+		<button class="add a-S" onclick="addCapsule('S')" title="Stone"></button>
+		<button class="add a-I" onclick="addCapsule('I')" title="Iron"></button>
+		<button class="add a-E" onclick="addCapsule('E')" title="Epic"></button>
+		<button class="add a-U" onclick="addCapsule('U')" title="Supreme"></button>
+		<button class="add a-R" onclick="addCapsule('-')" title="Remove"></button>
+	</div>
+	<div id="caps"></div>
+</div>
+<div id="Boxes"></div>
+</body>
+</html>

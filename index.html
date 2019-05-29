@@ -10,18 +10,40 @@
 <body>
 <div id="Header">
 	<h1>Adventure Communist Free Capsule Position Locater-Inator</h1>
-	<button class="ls-button" id="load" onclick="loadData()">Load</button>
-	<button class="ls-button" id="save" onclick="saveData()">Save</button><br/><br/>
 	<div id="cap-add">
-		<span style="display:inline-block"><button class="cap cap-W" onclick="addCapsule('W')" title="Wood"></button>
-		<button class="cap cap-S" onclick="addCapsule('S')" title="Stone"></button>
-		<button class="cap cap-I" onclick="addCapsule('I')" title="Iron"></button>
-		<button class="cap cap-E" onclick="addCapsule('E')" title="Epic"></button>
-		<button class="cap cap-U" onclick="addCapsule('U')" title="Supreme"></button></span>
-		<span style="display:inline-block"><button class="cap cap-x" onclick="addCapsule('*')" title="Wild/Unknown"></button>
-		<button class="cap cap-R" onclick="addCapsule('-')" title="Remove"></button></span>
+		<span style="display:inline-block">
+			<button class="cap cap-W" onclick="addCapsule('W')" title="Wood"></button>
+			<button class="cap cap-S" onclick="addCapsule('S')" title="Stone"></button>
+			<button class="cap cap-I" onclick="addCapsule('I')" title="Iron"></button>
+			<button class="cap cap-E" onclick="addCapsule('E')" title="Epic"></button>
+			<button class="cap cap-U" onclick="addCapsule('U')" title="Supreme"></button>
+		</span>
+		<span style="display:inline-block">
+			<button class="cap cap-x" onclick="addCapsule('x')" title="Wild/Unknown"></button>
+			<button class="cap cap-R" onclick="addCapsule('-')" title="Remove"></button>
+		</span>
 	</div>
-	<div id="cap-prob"></div>
+	<div id="cap-caps"></div>
+	<div id="prob-wrap">
+		<div class="cprob" id="cprob-W"></div>
+		<div class="cprob" id="cprob-S"></div>
+		<div class="cprob" id="cprob-I"></div>
+		<div class="cprob" id="cprob-E"></div>
+		<div class="cprob" id="cprob-U"></div>
+	</div>
+	<table id="cap-sav">
+		<tr>
+			<td><button class="ls-button" id="load1" onclick="loadData(1)">Load 1</button></td>
+			<td><button class="ls-button" id="load2" onclick="loadData(2)">Load 2</button></td>
+			<td><button class="ls-button" id="load3" onclick="loadData(3)">Load 3</button></td>
+		</tr>
+		<tr>
+			<td><button class="ls-button" id="save1" onclick="saveData(1)">Save 1</button></td>
+			<td><button class="ls-button" id="save2" onclick="saveData(2)">Save 2</button></td>
+			<td><button class="ls-button" id="save3" onclick="saveData(3)">Save 3</button></td>
+		</tr>
+	</table>
+	<input type="text" id="share"/>
 </div>
 <hr/>
 <div id="cap-list"></div>

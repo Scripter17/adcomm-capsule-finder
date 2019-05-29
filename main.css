@@ -2,10 +2,82 @@ body{
 	margin:0;
 	font-family:Courier New;
 }
+.cap{
+	width:40px;
+	height:29px;
+	background-repeat:no-repeat;
+	background-position:center;
+	display:inline-block;
+	image-rendering: -webkit-optimize-contrast; /* https://stackoverflow.com/a/35364179/10720231 */
+}
+.cap-W{background-image:url("Wood.png");}
+.cap-S{background-image:url("Stone.png");}
+.cap-I{background-image:url("Iron.png");}
+.cap-E{background-image:url("Epic.png");}
+.cap-U{background-image:url("Supreme.png");}
+.cap-R{background-image:url("Remove.png");}
+.cap-x{background-image:url("Wild.png");}
+
+/*
+	Header/input stuff
+*/
+
 #Header{
 	text-align:center;
 }
+#cap-add button.cap{
+	background-color:transparent;
+	border:6px solid transparent;
+	margin-bottom:1em;
+	cursor:pointer;
+}
 
+/*
+	Probability display
+*/
+
+#cap-prob{
+	width:100vw;
+	max-width:5in;
+}
+#cap-prob .cap{
+	vertical-align:middle;
+	display:inline-block;
+}
+#cap-prob{
+	left:0;
+	right:0;
+	margin:auto;
+}
+.cprob{
+	display:inline-block;
+}
+
+/*
+	Capsule list
+*/
+
+#cap-list .cap{
+	display:inline-block;
+	color:white;
+	text-shadow:1px 1px 0px black, 1px -1px 0px black, -1px 1px 0px black, -1px -1px 0px black;
+	padding:4px;
+	text-align:right;
+	line-height:calc(300%); /* TODO:Figure out why this works. (Note: Probably some luck with the font-size and image heights) */
+}
+.cap.sel{
+	background-color:lime;
+}
+
+/*
+	Load/Save
+*/
+
+#cap-sav{
+	left:0;
+	right:0;
+	margin:auto;
+}
 .ls-button{
 	padding:0.5em;
 	border:2px solid black;
@@ -15,53 +87,40 @@ body{
 	background-color:rgba(0,0,0,0.1);
 }
 
-span.prob{display:inline-block;}
-.cap{
-	width:40px;
-	height:29px;
-}
-#cap-add button.cap{
-	background-color:transparent;
-	border:none;
-	margin-bottom:1em;
-}
-#cap-prob .cap{
-	vertical-align:middle;
-	display:inline-block;
-}
-#cap-list .cap{
-	display:inline-block;
-	color:white;
-	text-shadow:1px 1px 0px black, 1px -1px 0px black, -1px 1px 0px black, -1px -1px 0px black;
-	background-repeat:no-repeat;
-	background-position:center;
-	padding:4px;
-	text-align:right;
-	line-height:calc(300%); /* TODO:Figure out why this works */
-}
-.cap.sel{
-	background-color:lime;
+/*
+	Share stuff
+*/
+
+#share{
+	width:90%;
+	max-width:3in;
+	text-align:center;
 }
 
-.cap-W{background-image:url("Wood.png");}
-.cap-S{background-image:url("Stone.png");}
-.cap-I{background-image:url("Iron.png");}
-.cap-E{background-image:url("Epic.png");}
-.cap-U{background-image:url("Supreme.png");}
-.cap-R{background-image:url("Remove.png"); width:29px; height:29px;}
-.cap-x{background-image:url("Wild.png");}
-
+/*
+	Properly handle the capsule list at different screen sizes
+	Always a multiple of 5 per row, with a max of 20
+	Also some misc. mobile optimizations
+*/
 
 #cap-list .cap{margin:calc((100% - 40px * 20) / 40 - 4px);}
 @media(max-width:1250px){#cap-list .cap{margin:calc((100% - 40px * 15) / 30 - 4px);}}
 @media(max-width:0850px){
 	#cap-list .cap{margin:calc((100% - 40px * 10) / 20 - 4px);}
 	.ls-button{font-size:1.25em;}
-	body{
+	body{ /* Selections are a pain on mobile */
 		-webkit-user-select:none;
 		-moz-user-select:none;
 		-ms-user-select:none;
 		user-select:none;
 	}
+	#share{
+		-webkit-user-select:all;
+		-moz-user-select:all;
+		-ms-user-select:all;
+		user-select:all;
+		font-size:1.2em;
+	}
 }
+/* TODO: Make this not look horrendously ugly at the start without making the 10-wide also hideous */
 @media(max-width:0550px){#cap-list .cap{margin:calc((100% - 40px * 5) / 10 - 4px);}}

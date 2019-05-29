@@ -2,6 +2,9 @@ body{
 	margin:0;
 	font-family:Courier New;
 }
+a{color:blue; text-decoration:none;}
+a:hover{text-decoration:underline;}
+a:active{color:red;}
 .cap{
 	width:40px;
 	height:29px;
@@ -10,13 +13,13 @@ body{
 	display:inline-block;
 	image-rendering: -webkit-optimize-contrast; /* https://stackoverflow.com/a/35364179/10720231 */
 }
-.cap-W{background-image:url("Wood.png");}
-.cap-S{background-image:url("Stone.png");}
-.cap-I{background-image:url("Iron.png");}
-.cap-E{background-image:url("Epic.png");}
-.cap-U{background-image:url("Supreme.png");}
-.cap-R{background-image:url("Remove.png");}
-.cap-x{background-image:url("Wild.png");}
+.cap-W{background-image:url("img/Wood.png");}
+.cap-S{background-image:url("img/Stone.png");}
+.cap-I{background-image:url("img/Iron.png");}
+.cap-E{background-image:url("img/Epic.png");}
+.cap-U{background-image:url("img/Supreme.png");}
+.cap-R{background-image:url("img/Remove.png");}
+.cap-x{background-image:url("img/Wild.png");}
 
 /*
 	Header/input stuff

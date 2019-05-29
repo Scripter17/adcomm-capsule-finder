@@ -14,6 +14,20 @@ WWSWWWWSWWWWSWWWWEWW"; // Each row is 20 long
 window.capsules="";
 
 window.onload=function(){
+	if (navigator.userAgent.indexOf("MSIE ")!=-1 || navigator.userAgent.indexOf("Trident/")!=-1){
+		// https://stackoverflow.com/a/21712356/10720231
+		// I will not be removing this.
+		document.body.innerHTML="";
+		alert("Why are you using IE?");
+		alert("Why are you making us web developers suffer because you want to use a browser from the 1750's?");
+		alert("Do you know how painful it is to make stuff work on that *atrocity* of a web browser?");
+		alert("Furthermore, are you unaware of all the security holes in it?");
+		alert("How about the fact that FireFox and Chrome actually try to keep you safe, AND act like software made in this century.");
+		alert("The most basic of stuff takes hours in IE, the web standards that every browser is supposed to follow is ignored by IE.")
+		while (true){
+			alert("WHY WOULD YOU USE INTERNET EXPLORER IN THE 21ST CENTURY");
+		}
+	}
 	// Prevent double-tapping from zooming in
 	document.addEventListener("touchend", function(e){e.preventDefault(); e.target.click();});
 
@@ -84,11 +98,13 @@ function render(){
 		var dists={"W":[], "S":[], "I":[], "E":[], "U":[]};
 		for (t in dists){
 			for (i=0; i<ni.length; i++){
+				// I mean, it *works*
 				for (d=0; window.sequence[(ni[i]+d)%window.sequence.length]!=t; d++){}
 				dists[t].push(d+1);
 			}
-			min=Math.min(...dists[t]); // TODO: Make this not need ES6.
-			max=Math.max(...dists[t]); // As if I care. Fuck Internet Explorer.
+			// Changed so that IE doesn't throw a hissy-fit
+			min=Math.min.apply(null, dists[t]);
+			max=Math.max.apply(null, dists[t]);
 			/*if (min==max){
 				dists[t]=min.toString();
 			} else {
@@ -115,7 +131,7 @@ function render(){
 	// Highlight all possible next boxes
 	window.capListCaps.forEach(function(v,i){
 		if (ni.indexOf(i)!=-1){
-			window.capListCaps[i].classList.add("sel");
+			v.classList.add("sel");
 		}
 	});
 }

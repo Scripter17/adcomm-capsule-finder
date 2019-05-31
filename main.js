@@ -30,16 +30,44 @@ function setType(t){
 }
 function init(){
 	var x, i, w, e,
-		b=["add", "seq", "prob", "save", "loop", "share"];
+		b=["add", "seq", "prob", "save", "loop", "share"],
+		saveWrap, swt, h;
+	if (window.location.hash.length>1){
+		h=window.location.hash.split("&");
+		window.currentSeq[h[1]]=h[0].substr(1, h[0].length-1);
+		window.currentWorld=h[1];
+		setType(h[1]);
+	} else {
+		h={
+			"main":localStorage.getItem("auto-main"),
+			"event":localStorage.getItem("auto-event")
+		}
+		for (i in h){
+			if (h[i]!==null){
+				window.currentSeq[i]=h[i]
+			}
+		}
+	}
 	for (w in window.loops){
 		e=document.getElementById("world-"+w);
-		e.innerHTML+='<div class="add-wrap" id="cap-add-'+w+'"></div>'
-		e.innerHTML+='<div class="seq-wrap" id="cap-seq-'+w+'"></div>'
-		e.innerHTML+='<div class="prob-wrap" id="cap-prob-'+w+'"></div>'
-		e.innerHTML+='<table class="save-wrap" id="cap-save-'+w+'"></table>'
-		e.innerHTML+='<input class="share-wrap" id="cap-share-'+w+'" type="text"/>'
-		e.innerHTML+='<hr/>'
-		e.innerHTML+='<div class="loop-wrap" id="cap-loop-'+w+'"></div>'
+		e.innerHTML+='<div class="add-wrap" id="cap-add-'+w+'"></div>';
+		e.innerHTML+='<div class="seq-wrap" id="cap-seq-'+w+'"></div>';
+		e.innerHTML+='<div class="prob-wrap" id="cap-prob-'+w+'"></div>';
+		e.innerHTML+='<table class="save-wrap" id="cap-save-'+w+'"></table>';
+		e.innerHTML+='<input class="share-wrap" id="cap-share-'+w+'" type="text"/>';
+		e.innerHTML+='<hr/>';
+		e.innerHTML+='<div class="loop-wrap" id="cap-loop-'+w+'"></div>';
+		saveWrap=document.getElementById("cap-save-"+w);
+		swt="<tr>"
+		for (i=1; i<=3; i++){
+			swt+="<td><button class='ls-button' onclick='loadState(\""+w+"\", "+i+")'>Load "+w[0]+i+"</td>"
+		}
+		swt+="</tr><tr>"
+		for (i=1; i<=3; i++){
+			swt+="<td><button class='ls-button' onclick='saveState(\""+w+"\", "+i+")'>Save "+w[0]+i+"</td>"
+		}
+		swt+="</tr>"
+		saveWrap.innerHTML=swt;
 	}
 
 	for (i=0; i<b.length; i++){
@@ -75,6 +103,7 @@ function addCapsule(t, w){
 	} else {
 		window.currentSeq[w]+=t;
 	}
+	window.localStorage.setItem("auto-"+w, window.currentSeq[w])
 	render();
 }
 function render(){
@@ -102,7 +131,6 @@ function render(){
 
 			nt=getNextTypes(w);
 			dists=getDists(w);
-			console.log(dists)
 			ntsum=0;
 			pwhtml="";
 			for (i in nt){ntsum+=nt[i]}
@@ -171,4 +199,13 @@ function getDists(w){
 		}
 	}
 	return ret
+}
+
+function saveState(w, i){
+	localStorage.setItem("save-"+w+"-"+i,window.currentSeq[w]);
+	render();
+}
+function loadState(w, i){
+	window.currentSeq[w]=localStorage.getItem("save-"+w+"-"+i);
+	render();
 }

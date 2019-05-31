@@ -9,7 +9,6 @@
 	<meta name="author" content="James C. Wise">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="main.js"></script>
-	<script src="render.js"></script>
 	<link rel="stylesheet" href="main.css">
 </head>
 <body>
@@ -20,13 +19,8 @@
 		<button id="setMain" onclick="setType('main')">Main</button>
 		<button id="setEvent" onclick="setType('event')">Event</button>
 	</h3>
-	<div id="cap-add"></div>
-	<div id="cap-seq"></div>
-	<div id="cap-prob"></div>
-	<table id="cap-save"></table>
-	<input type="text" id="cap-share"/>
 </div>
-<hr/>
-<div id="cap-loop"></div>
+<div class="world-wrap" id="world-main"></div>
+<div class="world-wrap" id="world-event"></div>
 </body>
 </html>

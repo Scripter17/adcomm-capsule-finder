@@ -1,6 +1,8 @@
 body{
 	margin:0;
 	font-family:Courier New;
+	width:100vw;
+	overflow-x:hidden;
 }
 a{color:blue; text-decoration:none;}
 a:hover{text-decoration:underline;}
@@ -22,8 +24,8 @@ a:active{color:red;}
 .cap-P{background-image:url("img/Plastic.png");}
 .cap-A{background-image:url("img/Armored.png");}
 
-.cap-R{background-image:url("img/Remove.png");}
-.cap-x{background-image:url("img/Wild.png");}
+.cap-1{background-image:url("img/Wild.png");}
+.cap-DEL{background-image:url("img/Remove.png");}
 
 /*
 	Header/input stuff
@@ -32,7 +34,7 @@ a:active{color:red;}
 #Header{
 	text-align:center;
 }
-#cap-add button.cap{
+.add-wrap button.cap{
 	background-color:transparent;
 	border:6px solid transparent;
 	margin-bottom:1em;
@@ -43,15 +45,15 @@ a:active{color:red;}
 	Probability display
 */
 
-#cap-prob{
+.prob-wrap{
 	width:100vw;
 	max-width:5in;
 }
-#cap-prob .cap{
+.prob-wrap .cap{
 	vertical-align:middle;
 	display:inline-block;
 }
-#cap-prob{
+.prob-wrap{
 	left:0;
 	right:0;
 	margin:auto;
@@ -64,7 +66,7 @@ a:active{color:red;}
 	Capsule list
 */
 
-#cap-loop .cap{
+.loop-wrap .cap{
 	display:inline-block;
 	color:white;
 	text-shadow:1px 1px 0px black, 1px -1px 0px black, -1px 1px 0px black, -1px -1px 0px black;
@@ -80,7 +82,7 @@ a:active{color:red;}
 	Load/Save
 */
 
-#cap-sav{
+.save-wrap{
 	left:0;
 	right:0;
 	margin:auto;
@@ -98,7 +100,7 @@ a:active{color:red;}
 	Share stuff
 */
 
-#share{
+.share-wrap{
 	width:90%;
 	max-width:3in;
 	text-align:center;
@@ -110,12 +112,8 @@ a:active{color:red;}
 	Also some misc. mobile optimizations
 */
 
-#cap-loop .cap{margin:calc((100% - 40px * 20) / 40 - 4px);}
-@media(max-width:1250px){#cap-loop .cap{margin:calc((100% - 40px * 15) / 30 - 4px);}}
-@media(max-width:0850px){
-	#cap-loop .cap{margin:calc((100% - 40px * 10) / 20 - 4px);}
 	.ls-button{font-size:1.25em;}
-	body{ /* Selections are a pain on mobile */
+	/*body{ / * Selections are a pain on mobile * /
 		-webkit-user-select:none;
 		-moz-user-select:none;
 		-ms-user-select:none;
@@ -127,7 +125,26 @@ a:active{color:red;}
 		-ms-user-select:all;
 		user-select:all;
 		font-size:1.2em;
-	}
-}
-/* TODO: Make this not look horrendously ugly at the start without making the 10-wide also hideous */
+	}*/
+/*
+#cap-loop .cap{margin:calc((100% - 40px * 20) / 40 - 4px);}
+@media(max-width:1250px){#cap-loop .cap{margin:calc((100% - 40px * 15) / 30 - 4px);}}
+@media(max-width:0850px){#cap-loop .cap{margin:calc((100% - 40px * 10) / 20 - 4px);}}
 @media(max-width:0550px){#cap-loop .cap{margin:calc((100% - 40px * 5) / 10 - 4px);}}
+*/
+.loop-wrap{max-width:100vw; left:0; right:0; margin:auto;}
+.loop-wrap .cap{margin:4px;}
+
+.world-wrap{text-align: center;}
+
+body[type=main] #world-event{display:none;}
+#cap-loop-main{width:calc(56px * 20);}
+@media(max-width:1120px){#cap-loop-main{width:calc(56px * 15);}}
+@media(max-width:840px){#cap-loop-main{width:calc(56px * 10);}}
+@media(max-width:560px){#cap-loop-main{width:calc(56px * 05);}}
+
+body[type=event] #world-main{display:none;}
+#cap-loop-event{width:calc(56px * 12); left:0; right:0; margin:auto;}
+@media(max-width:672px){#cap-loop-event{width:calc(56px * 08);}}
+@media(max-width:448px){#cap-loop-event{width:calc(56px * 06);}}
+@media(max-width:336px){#cap-loop-event{width:calc(56px * 04);}}

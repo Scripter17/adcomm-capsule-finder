@@ -9,48 +9,24 @@
 	<meta name="author" content="James C. Wise">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="main.js"></script>
+	<script src="render.js"></script>
 	<link rel="stylesheet" href="main.css">
 </head>
 <body>
 <div id="Header">
 	<h1>Adventure Communist Free Capsule Position Locater-Inator</h1>
 	<h3><a href="https://github.com/Scripter17/adcomm-capsule-finder" target="_blank">By Scripter17 on GitHub</a></h3>
-	<div id="cap-add">
-		<span style="display:inline-block">
-			<button class="cap cap-W" onclick="addCapsule('W')" title="Wood"></button>
-			<button class="cap cap-S" onclick="addCapsule('S')" title="Stone"></button>
-			<button class="cap cap-I" onclick="addCapsule('I')" title="Iron"></button>
-			<button class="cap cap-E" onclick="addCapsule('E')" title="Epic"></button>
-			<button class="cap cap-U" onclick="addCapsule('U')" title="Supreme"></button>
-		</span>
-		<span style="display:inline-block">
-			<button class="cap cap-x" onclick="addCapsule('x')" title="Wild/Unknown"></button>
-			<button class="cap cap-R" onclick="addCapsule('-')" title="Remove"></button>
-		</span>
-	</div>
-	<div id="cap-caps"></div>
-	<div id="prob-wrap">
-		<div class="cprob" id="cprob-W"></div>
-		<div class="cprob" id="cprob-S"></div>
-		<div class="cprob" id="cprob-I"></div>
-		<div class="cprob" id="cprob-E"></div>
-		<div class="cprob" id="cprob-U"></div>
-	</div>
-	<table id="cap-sav">
-		<tr>
-			<td><button class="ls-button" id="load1" onclick="loadData(1)">Load 1</button></td>
-			<td><button class="ls-button" id="load2" onclick="loadData(2)">Load 2</button></td>
-			<td><button class="ls-button" id="load3" onclick="loadData(3)">Load 3</button></td>
-		</tr>
-		<tr>
-			<td><button class="ls-button" id="save1" onclick="saveData(1)">Save 1</button></td>
-			<td><button class="ls-button" id="save2" onclick="saveData(2)">Save 2</button></td>
-			<td><button class="ls-button" id="save3" onclick="saveData(3)">Save 3</button></td>
-		</tr>
-	</table>
-	<input type="text" id="share"/>
+	<h3>
+		<button id="setMain" onclick="setType('main')">Main</button>
+		<button id="setEvent" onclick="setType('event')">Event</button>
+	</h3>
+	<div id="cap-add"></div>
+	<div id="cap-seq"></div>
+	<div id="cap-prob"></div>
+	<table id="cap-save"></table>
+	<input type="text" id="cap-share"/>
 </div>
 <hr/>
-<div id="cap-list"></div>
+<div id="cap-loop"></div>
 </body>
 </html>

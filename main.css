@@ -18,6 +18,10 @@ a:active{color:red;}
 .cap-I{background-image:url("img/Iron.png");}
 .cap-E{background-image:url("img/Epic.png");}
 .cap-U{background-image:url("img/Supreme.png");}
+
+.cap-P{background-image:url("img/Plastic.png");}
+.cap-A{background-image:url("img/Armored.png");}
+
 .cap-R{background-image:url("img/Remove.png");}
 .cap-x{background-image:url("img/Wild.png");}
 
@@ -60,7 +64,7 @@ a:active{color:red;}
 	Capsule list
 */
 
-#cap-list .cap{
+#cap-loop .cap{
 	display:inline-block;
 	color:white;
 	text-shadow:1px 1px 0px black, 1px -1px 0px black, -1px 1px 0px black, -1px -1px 0px black;
@@ -106,10 +110,10 @@ a:active{color:red;}
 	Also some misc. mobile optimizations
 */
 
-#cap-list .cap{margin:calc((100% - 40px * 20) / 40 - 4px);}
-@media(max-width:1250px){#cap-list .cap{margin:calc((100% - 40px * 15) / 30 - 4px);}}
+#cap-loop .cap{margin:calc((100% - 40px * 20) / 40 - 4px);}
+@media(max-width:1250px){#cap-loop .cap{margin:calc((100% - 40px * 15) / 30 - 4px);}}
 @media(max-width:0850px){
-	#cap-list .cap{margin:calc((100% - 40px * 10) / 20 - 4px);}
+	#cap-loop .cap{margin:calc((100% - 40px * 10) / 20 - 4px);}
 	.ls-button{font-size:1.25em;}
 	body{ /* Selections are a pain on mobile */
 		-webkit-user-select:none;
@@ -126,4 +130,4 @@ a:active{color:red;}
 	}
 }
 /* TODO: Make this not look horrendously ugly at the start without making the 10-wide also hideous */
-@media(max-width:0550px){#cap-list .cap{margin:calc((100% - 40px * 5) / 10 - 4px);}}
+@media(max-width:0550px){#cap-loop .cap{margin:calc((100% - 40px * 5) / 10 - 4px);}}

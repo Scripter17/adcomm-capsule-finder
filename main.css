@@ -24,8 +24,8 @@ a:active{color:red;}
 .cap-P{background-image:url("img/Plastic.png");}
 .cap-A{background-image:url("img/Armored.png");}
 
-.cap-1{background-image:url("img/Wild.png");}
-.cap-DEL{background-image:url("img/Remove.png");}
+.cap-x{background-image:url("img/Wild.png");}
+.cap--{background-image:url("img/Remove.png");}
 
 /*
 	Header/input stuff
@@ -60,6 +60,7 @@ a:active{color:red;}
 }
 .cprob{
 	display:inline-block;
+	margin:0.5em;
 }
 
 /*

@@ -42,27 +42,39 @@ window.dat={
 		},
 		currentSeq:""
 	}
-}
+};
 window.saveSlots=3;
 window.onload=function(){
 	init();
-}
+};
+// Set whether the user is using the main or event capsule finder
 function setType(t){
 	document.body.setAttribute("type", t);
 	localStorage.setItem("type", t);
 	window.currentWorld=t;
 }
+// localhost#PAP&event -> Plastic, Armored, Plastic in the event menu
+function handleHash(){
+	state=window.location.hash.split("&");
+	if (state[1]==undefined){state[1]="main";} // localhost#WWS -> localhost#WWS&main
+	window.dat[state[1]].currentSeq=state[0].substr(1, state[0].length-1);
+	window.currentWorld=state[1];
+	setType(state[1]);
+}
 function init(){
-
+	window.onhashchange=function(){
+		handleHash();
+		render();
+	}
 
 	var state, world;
 	// Handle autosaved states and hash links
 	if (window.location.hash.length>1){
-		state=window.location.state.split("&");
-		window.dat[state[1]].currentSeq=hash[0].substr(1, state[0].length-1);
-		window.currentWorld=state[1];
-		setType(hash[1]);
+		handleHash();
 	} else {
+		// Load auto-save
+		// Auto-save is updated whenever the user adds/removes a capsule to/from a sequence
+		// Loading hash states doesn't affect it
 		state={};
 		for (world in window.dat){
 			state[world]=localStorage.getItem("auto-"+world);
@@ -72,14 +84,14 @@ function init(){
 				window.dat[world].currentSeq=state[world];
 			}
 		}
-		setType(localStorage.getItem("type"));
+		setType(localStorage.getItem("type")); // Store which menu the user was last using
 	}
 
 	var worldElem, saveWrap;
 	for (world in window.dat){
-
+		// We're making it dynamically so that we can easily add more worlds as needed
 		document.getElementById("world-divs-wrap").innerHTML+="<div class='world-wrap' id='world-"+world+"'></div>"
-		document.getElementById("world-buttons-wrap").innerHTML+="<button class='set-button' id='setMain' onclick='setType(\""+world+"\")'>"+world+"</button>"
+		document.getElementById("world-buttons-wrap").innerHTML+="<button class='set-button' id='setMain' onclick='setType(\""+world+"\")'>"+world+"</button>";
 
 		worldElem=document.getElementById("world-"+world);
 		worldElem.innerHTML+='<div class="add-wrap" id="cap-add-'+world+'"></div>';
@@ -91,22 +103,30 @@ function init(){
 		worldElem.innerHTML+='<div class="loop-wrap" id="cap-loop-'+world+'"></div>';
 		// Add save/load buttons
 		saveWrap=document.getElementById("cap-save-"+world);
-		swt="<tr>"
+		swt="<tr>"; // Apparently doing `saveWrap.innerHTML+="<tr>"` adds a `</tr>` too
 		for (i=1; i<=window.saveSlots; i++){
-			swt+="<td><button id='load-"+world+"-"+i+"' class='ls-button' onclick='loadState(\""+world+"\", "+i+")'>Load "+world[0]+i+"</td>"
+			swt+="<td><button id='load-"+world+"-"+i+"' class='ls-button' onclick='loadState(\""+world+"\", "+i+")'>Load "+world[0]+i+"</td>";
 		}
 		swt+="</tr><tr>"
 		for (i=1; i<=window.saveSlots; i++){
-			swt+="<td><button id='save-"+world+"-"+i+"' class='ls-button' onclick='saveState(\""+world+"\", "+i+")'>Save "+world[0]+i+"</td>"
+			swt+="<td><button id='save-"+world+"-"+i+"' class='ls-button' onclick='saveState(\""+world+"\", "+i+")'>Save "+world[0]+i+"</td>";
 		}
-		swt+="</tr>"
+		swt+="</tr>";
 		saveWrap.innerHTML=swt;
+
+		// Trying to add it to each element doesn't work for some unknown reason
+		// It works for the event share button, but not the main one????????????
+		document.addEventListener("click", function(e){
+			if (e.target.getAttribute("class").indexOf("share-wrap")!=-1){
+				e.target.setSelectionRange(0, e.target.value.length);
+			}
+		})
 	}
 
 	// Get box elements
 	var index, boxes=["add", "seq", "prob", "save", "loop", "share"], world;
 	for (index=0; index<boxes.length; index++){
-		window[boxes[index]+"Box"]={}
+		window[boxes[index]+"Box"]={};
 		for (world in window.dat){
 			window[boxes[index]+"Box"][world]=document.getElementById("cap-"+boxes[index]+"-"+world);
 		}
@@ -120,15 +140,28 @@ function init(){
 	var world, capName, index;
 	for (world in window.dat){
 		for (capName in window.dat[world].capNames){
-			window.addBox[world].innerHTML+="<button class='cap cap-"+capName+"' onclick='addCapsule(\""+capName+"\", \""+world+"\")'></button>"
+			window.addBox[world].innerHTML+="<button class='cap cap-"+capName+"' onclick='addCapsule(\""+capName+"\", \""+world+"\")'></button>";
 		}
-		window.addBox[world].innerHTML+="<button class='cap cap-x' onclick=\"addCapsule('x', '"+world+"')\"></button>"
-		window.addBox[world].innerHTML+="<button class='cap cap--' onclick=\"addCapsule('-', '"+world+"')\"></button>"
+		window.addBox[world].innerHTML+="<button class='cap cap-x' onclick=\"addCapsule('x', '"+world+"')\"></button>";
+		window.addBox[world].innerHTML+="<button class='cap cap--' onclick=\"addCapsule('-', '"+world+"')\"></button>";
 		for (index=0; index<window.dat[world].loop.length; index++){
 			capName=window.dat[world].loop[index];
-			window.loopBox[world].innerHTML+="<b class='cap cap-"+capName+"'>"+(index+1)+"</b>"
+			window.loopBox[world].innerHTML+="<b class='cap cap-"+capName+"'>"+(index+1)+"</b>";
 		}
 	}
+
+	if (localStorage.getItem("portedOld")!="1"){
+		var oldSave;
+		for (index=0; index<=3; index++){
+			oldSave=localStorage.getItem("data"+index);
+			console.log(oldSave);
+			if (oldSave!=null){
+				saveState("main", index, oldSave);
+			}
+		}
+		localStorage.setItem("portedOld", "1");
+	}
+
 
 	render();
 }
@@ -147,19 +180,18 @@ function render(){
 		loopc, pwrap, pwhtml;
 	for (w in window.dat){
 		loopc=document.querySelectorAll("#cap-loop-"+w+" .cap");
-		pwrap=document.getElementById("cap-prob-"+w);
 		window.seqBox[w].innerHTML="";
 		for (i=0; i<window.dat[w].currentSeq.length; i++){
-			window.seqBox[w].innerHTML+="<b class='cap cap-"+window.dat[w].currentSeq[i]+"'></b>"
+			window.seqBox[w].innerHTML+="<b class='cap cap-"+window.dat[w].currentSeq[i]+"'></b>";
 		}
 		for (i=0; i<window.dat[w].loop.length; i++){
-			loopc[i].classList.remove("sel")
+			loopc[i].classList.remove("sel");
 		}
 		if (window.dat[w].currentSeq!=""){
 			ni=getNextIndexes(w);
 			for (i=0; i<window.dat[w].loop.length; i++){
 				if (ni.indexOf(i)!=-1){
-					loopc[i].classList.add("sel")
+					loopc[i].classList.add("sel");
 				}
 			}
 
@@ -173,6 +205,7 @@ function render(){
 				}
 			}
 
+			pwrap=window.probBox[w];
 			pwrap.innerHTML="";
 			if (ni.length>0){
 				nt=getNextTypes(w);
@@ -181,22 +214,22 @@ function render(){
 				pwhtml="";
 				for (i in nt){ntsum+=nt[i]}
 				for (i in window.dat[w].capNames){
-					pwhtml+="<div class='cprob'>"
-					pwhtml+="<b class='cap cap-"+i+"'></b><br/>"
-					pwhtml+=(i in nt?nt[i]:0)+"<br/>"
+					pwhtml+="<div class='cprob'>";
+					pwhtml+="<b class='cap cap-"+i+"'></b><br/>";
+					pwhtml+=(i in nt?nt[i]:0)+"<br/>";
 					pwhtml+=((i in nt?nt[i]:0)/ntsum*100).toFixed(2)+"%<br/>";
 					pwhtml+=dists[i]+"</div>";
 					pwrap.innerHTML=pwhtml;
 				}
 			}
 		}
+		window.shareBox[w].value=window.location.href.split("#")[0]+"#"+window.dat[w].currentSeq+"&"+w;
 	}
 }
 
 function getNextIndexes(w){
 	var loop=window.dat[w].loop,
 		seq=window.dat[w].currentSeq,
-		capBoxes=document.querySelectorAll("#cap-loop-"+w+" .cap"),
 		s, i, valid, ret=[];
 	for (s=0; s<loop.length; s++){
 		valid=true;
@@ -207,7 +240,7 @@ function getNextIndexes(w){
 			}
 		}
 		if (valid){
-			ret.push((s+i)%loop.length)
+			ret.push((s+i)%loop.length);
 		}
 	}
 	return ret;
@@ -245,11 +278,11 @@ function getDists(w){
 			ret[t]=min+"-"+max;
 		}
 	}
-	return ret
+	return ret;
 }
 
-function saveState(w, i){
-	var s=window.dat[w].currentSeq;
+function saveState(w, i, s){
+	if (s===undefined){s=window.dat[w].currentSeq;}
 	localStorage.setItem("save-"+w+"-"+i, s);
 	render();
 }

@@ -24,6 +24,7 @@ window.currentSeq={
 */
 window.dat={
 	"main":{
+		// Thank you to /u/zephyron1237 on Reddit for making this part easy on me
 		loop:"SWWWWIWWWWSWWWSWWWWSWWWWSWWWWSWWWWSWWWWSWWWWWSWWWWSWWWWSWWWWWWSWWWSWWWIWWWSWWWSWWWSWWWSWWWSWWWSWWWSWWSWWWWSWWWWSWWWSWWWUWWWSWWWIWWWWSWWWWWSWWWSWWWSWWWWSWWWWSWWWSWWWSWWWWSWWWWSWWSWWWSWWWSWWWWWIWWWSWWWWSWWWWSWWWWSWWWWWWSWWWWSWWWWSWWWWSWWWWEWW",
 		capNames:{
 			"W":"Wood",
@@ -48,24 +49,29 @@ window.onload=function(){
 	init();
 };
 // Set whether the user is using the main or event capsule finder
-function setType(t){
-	document.body.setAttribute("type", t);
-	localStorage.setItem("type", t);
+function setWorld(t){
+	document.body.setAttribute("world", t);
+	localStorage.setItem("world", t);
 	window.currentWorld=t;
 }
 // localhost#PAP&event -> Plastic, Armored, Plastic in the event menu
 function handleHash(){
 	state=window.location.hash.split("&");
 	if (state[1]==undefined){state[1]="main";} // localhost#WWS -> localhost#WWS&main
+	state[0]=state[0].toUpperCase();
+	state[1]=state[1].toLowerCase();
 	window.dat[state[1]].currentSeq=state[0].substr(1, state[0].length-1);
 	window.currentWorld=state[1];
-	setType(state[1]);
+	setWorld(state[1]);
 }
 function init(){
 	window.onhashchange=function(){
 		handleHash();
 		render();
 	}
+	// Prevent double-tapping on a phone from zooming in.
+	// You can still pinch zoom
+	document.addEventListener("touchend", function(e){e.preventDefault(); e.target.click();});
 
 	var state, world;
 	// Handle autosaved states and hash links
@@ -84,14 +90,14 @@ function init(){
 				window.dat[world].currentSeq=state[world];
 			}
 		}
-		setType(localStorage.getItem("type")); // Store which menu the user was last using
+		setWorld(localStorage.getItem("world")); // Store which menu the user was last using
 	}
 
 	var worldElem, saveWrap;
 	for (world in window.dat){
 		// We're making it dynamically so that we can easily add more worlds as needed
 		document.getElementById("world-divs-wrap").innerHTML+="<div class='world-wrap' id='world-"+world+"'></div>"
-		document.getElementById("world-buttons-wrap").innerHTML+="<button class='set-button' id='setMain' onclick='setType(\""+world+"\")'>"+world+"</button>";
+		document.getElementById("world-buttons-wrap").innerHTML+="<button class='set-button' id='setMain' onclick='setWorld(\""+world+"\")'>"+world+"</button>";
 
 		worldElem=document.getElementById("world-"+world);
 		worldElem.innerHTML+='<div class="add-wrap" id="cap-add-'+world+'"></div>';
@@ -137,16 +143,16 @@ function init(){
 	} else {
 		setType(localStorage.getItem("type"));
 	}*/
-	var world, capName, index;
+	var world, capKey, index;
 	for (world in window.dat){
-		for (capName in window.dat[world].capNames){
-			window.addBox[world].innerHTML+="<button class='cap cap-"+capName+"' onclick='addCapsule(\""+capName+"\", \""+world+"\")'></button>";
+		for (capKey in window.dat[world].capNames){
+			window.addBox[world].innerHTML+="<button class='cap cap-"+capKey+"' onclick=\"addCapsule('"+capKey+"', '"+world+"')\" title='"+window.dat[world].capNames[capKey]+"'></button>";
 		}
 		window.addBox[world].innerHTML+="<button class='cap cap-x' onclick=\"addCapsule('x', '"+world+"')\"></button>";
 		window.addBox[world].innerHTML+="<button class='cap cap--' onclick=\"addCapsule('-', '"+world+"')\"></button>";
 		for (index=0; index<window.dat[world].loop.length; index++){
-			capName=window.dat[world].loop[index];
-			window.loopBox[world].innerHTML+="<b class='cap cap-"+capName+"'>"+(index+1)+"</b>";
+			capKey=window.dat[world].loop[index];
+			window.loopBox[world].innerHTML+="<b class='cap cap-"+capKey+"'>"+(index+1)+"</b>";
 		}
 	}
 
@@ -175,120 +181,129 @@ function addCapsule(t, w){
 	render();
 }
 function render(){
-	var w, i,
+	var world, index,
 		ni, nt, ntsum, dists,
-		loopc, pwrap, pwhtml;
-	for (w in window.dat){
-		loopc=document.querySelectorAll("#cap-loop-"+w+" .cap");
-		window.seqBox[w].innerHTML="";
-		for (i=0; i<window.dat[w].currentSeq.length; i++){
-			window.seqBox[w].innerHTML+="<b class='cap cap-"+window.dat[w].currentSeq[i]+"'></b>";
+		loopCaps, probe, probeHTML;
+	for (world in window.dat){
+		ni=getNextIndexes(world);
+		loopCaps=document.querySelectorAll("#cap-loop-"+world+" .cap");
+
+		// Show the current capsule sequences
+		window.seqBox[world].innerHTML="";
+		for (index=0; index<window.dat[world].currentSeq.length; index++){
+			window.seqBox[world].innerHTML+="<b class='cap cap-"+window.dat[world].currentSeq[index]+"'></b>";
 		}
-		for (i=0; i<window.dat[w].loop.length; i++){
-			loopc[i].classList.remove("sel");
+
+		// Remove the green highlight from all capsules
+		for (index=0; index<window.dat[world].loop.length; index++){
+			loopCaps[index].classList.remove("sel");
 		}
-		if (window.dat[w].currentSeq!=""){
-			ni=getNextIndexes(w);
-			for (i=0; i<window.dat[w].loop.length; i++){
-				if (ni.indexOf(i)!=-1){
-					loopc[i].classList.add("sel");
+		// Add a green highlight to all possible next capsules
+		if (window.dat[world].currentSeq!=""){
+			for (index=0; index<window.dat[world].loop.length; index++){
+				if (ni.indexOf(index)!=-1){ // if index in nextCapsuleIndexes
+					loopCaps[index].classList.add("sel");
 				}
 			}
 
-			for (i=1; i<=window.saveSlots; i++){
-				if (localStorage.getItem("save-"+w+"-"+i)!=null){
-					if (localStorage.getItem("save-"+w+"-"+i)!=window.dat[w].currentSeq){
-						document.getElementById("save-"+w+"-"+i).style.borderColor="red";
+			for (index=1; index<=window.saveSlots; index++){
+				if (localStorage.getItem("save-"+world+"-"+index)!=null){
+					if (localStorage.getItem("save-"+world+"-"+index)!=window.dat[world].currentSeq){
+						document.getElementById("save-"+world+"-"+index).style.borderColor="red";
 					} else {
-						document.getElementById("save-"+w+"-"+i).style.borderColor="green";
+						document.getElementById("save-"+world+"-"+index).style.borderColor="green";
 					}
 				}
 			}
+		}
 
-			pwrap=window.probBox[w];
-			pwrap.innerHTML="";
-			if (ni.length>0){
-				nt=getNextTypes(w);
-				dists=getDists(w);
-				ntsum=0;
-				pwhtml="";
-				for (i in nt){ntsum+=nt[i]}
-				for (i in window.dat[w].capNames){
-					pwhtml+="<div class='cprob'>";
-					pwhtml+="<b class='cap cap-"+i+"'></b><br/>";
-					pwhtml+=(i in nt?nt[i]:0)+"<br/>";
-					pwhtml+=((i in nt?nt[i]:0)/ntsum*100).toFixed(2)+"%<br/>";
-					pwhtml+=dists[i]+"</div>";
-					pwrap.innerHTML=pwhtml;
-				}
+		// Render the probability boxes
+		probe=window.probBox[world];
+		probe.innerHTML="";
+		if (ni.length>0){ // If there are no possible next capsules, do nothing
+			nt=getNextTypes(world); // How many next capsules are Wood, Stone, etc.
+			dists=getDists(world); // {"W":"1-2", "S":"3-6", "U":"1"} (Not an actual output)
+			ntsum=0;
+			// Attempting to do `probe.innerHTML+="<div>"` also adds a `</div>`, so we're doing it all at once later
+			probeHTML="";
+			for (index in nt){ntsum+=nt[index];}
+			for (index in window.dat[world].capNames){
+				probeHTML+="<div class='cprob'>";
+				probeHTML+="<b class='cap cap-"+index+"'></b><br/>"; // The capsule icon
+				probeHTML+=(index in nt?nt[index]:0)+"<br/>"; // The amount of next capsules that are that type
+				probeHTML+=((index in nt?nt[index]:0)/ntsum*100).toFixed(2)+"%<br/>"; // The probability
+				probeHTML+=dists[index]+"</div>"; // The min/max number of capsules until this type
+				probe.innerHTML=probeHTML;
 			}
 		}
-		window.shareBox[w].value=window.location.href.split("#")[0]+"#"+window.dat[w].currentSeq+"&"+w;
+		// Write the hotlink to the share button thingy
+		window.shareBox[world].value=window.location.href.split("#")[0]+"#"+window.dat[world].currentSeq+"&"+world;
 	}
 }
 
-function getNextIndexes(w){
-	var loop=window.dat[w].loop,
-		seq=window.dat[w].currentSeq,
-		s, i, valid, ret=[];
-	for (s=0; s<loop.length; s++){
+function getNextIndexes(world){
+	var loop=window.dat[world].loop,
+		seq=window.dat[world].currentSeq,
+		start, delta, valid, ret=[];
+	if (window.dat[world].currentSeq==""){return ret;}
+	for (start=0; start<loop.length; start++){
 		valid=true;
-		for (i=0; i<seq.length; i++){
-			if (seq[i]!=loop[(s+i)%loop.length] && seq[i]!="x"){
+		for (delta=0; delta<seq.length; delta++){
+			if (seq[delta]!=loop[(start+delta)%loop.length] && seq[delta]!="x"){ // "x" is wildcard
+				// If there's a mismatch, `start` isn't a starting point, so whatever end we get doesn't work
 				valid=false;
 				break;
 			}
 		}
 		if (valid){
-			ret.push((s+i)%loop.length);
+			ret.push((start+delta)%loop.length);
 		}
 	}
 	return ret;
 }
 
-function getNextTypes(w){
-	var loop=window.dat[w].loop,
-		ni=getNextIndexes(w),
-		i, ret={};
-	for (i=0; i<ni.length; i++){
-		if (loop[ni[i]] in ret){
-			ret[loop[ni[i]]]+=1;
-		} else {
-			ret[loop[ni[i]]]=1;
-		}
+function getNextTypes(world){
+	var loop=window.dat[world].loop,
+		ni=getNextIndexes(world),
+		index, type, ret={};
+	for (type in window.dat[world].capNames){ret[type]=0;} // Initialize all the values
+	for (index=0; index<ni.length; index++){
+	//	[[[[[Index hell]]]]]
+		ret[loop[ni[index]]]+=1; // If the capsule is wood, add one to the wood slot
 	}
 	return ret;
 }
 
-function getDists(w){
-	var t, i, d, ret={}, ni=getNextIndexes(w), min, max;
-	for (t in window.dat[w].capNames){
-		ret[t]=[];
-		for (i=0; i<ni.length; i++){
-			for (d=0; window.dat[w].loop[(ni[i]+d)%window.dat[w].loop.length]!=t; d++){
+function getDists(world){
+	var type, index, delta, ret={},
+		ni=getNextIndexes(world), min, max;
+	for (type in window.dat[world].capNames){
+		ret[type]=[];
+		for (index=0; index<ni.length; index++){
+			for (delta=0; window.dat[world].loop[(ni[index]+delta)%window.dat[world].loop.length]!=type; delta++){
 				// I mean, it *works*
 			}
-			ret[t].push(d+1);
+			ret[type].push(delta+1);
 		}
-		min=Math.min.apply(null, ret[t]);
-		max=Math.max.apply(null, ret[t]);
+		min=Math.min.apply(null, ret[type]); // I just read a MDN page on how to do this
+		max=Math.max.apply(null, ret[type]); // I don't actually understand why you need the `null`
 		if (min==max){
-			ret[t]=min.toString();
+			ret[type]=min.toString();
 		} else {
-			ret[t]=min+"-"+max;
+			ret[type]=min+"-"+max;
 		}
 	}
 	return ret;
 }
 
-function saveState(w, i, s){
-	if (s===undefined){s=window.dat[w].currentSeq;}
-	localStorage.setItem("save-"+w+"-"+i, s);
+function saveState(world, slot, state){
+	if (state===undefined){state=window.dat[world].currentSeq;}
+	localStorage.setItem("save-"+world+"-"+slot, state);
 	render();
 }
-function loadState(w, i){
-	var l=localStorage.getItem("save-"+w+"-"+i);
-	if (l==null){l="";}
-	window.dat[w].currentSeq=l;
+function loadState(world, slot){
+	var state=localStorage.getItem("save-"+world+"-"+slot);
+	if (state==null){state="";}
+	window.dat[world].currentSeq=state;
 	render();
 }

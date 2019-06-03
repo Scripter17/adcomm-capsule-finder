@@ -1,0 +1,22 @@
+body{
+	margin:0;
+	font-family:Courier New;
+	width:100vw;
+	overflow-x:hidden;
+}
+a{color:blue; text-decoration:none;}
+a:hover{text-decoration:underline;}
+a:active{color:red;}
+#Header{
+	text-align:center;
+}
+box{
+	display:inline-block;
+}
+
+table{border:1px solid black; min-width:80%;}
+table table{width:100%;}
+tr{border:1px solid orange;}
+td{border:1px solid blue;}
+table, tr, td{padding:4px;}
+td button{width:100%;}

@@ -1,0 +1,40 @@
+window.dat={
+	"main":{
+		"Potato":{
+			"Farmer":{
+				"cost":{
+					"industry":[10,0],
+					"comrades":1
+				},
+				"production":{
+					"quantity":3,
+					"type":"Potato",
+					"time":2
+				},
+				"cards":[{
+					"name":"Ringo Ringlet",
+					"type":"speed",
+					"max-level":13,
+					"multiplier":2
+				}]
+			},
+			"Commune":{
+				"cost":{
+					"industry":[100,10],
+					"comrades":1
+				},
+				"production":{
+					"quantity":4,
+					"type":"Farmer"
+					"time":4
+				},
+				"cards":[{
+					"name":"Commune of Doggone",
+					"type":"speed",
+					"max-level":13,
+					"multiplier":2
+				}]
+			}
+		}
+	}
+}

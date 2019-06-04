@@ -25,7 +25,7 @@
 					"unlock":0,
 					"cost":{
 						"comrade":1,
-						"potato":1,
+						"indus":1,
 						"lastTier":0
 					},
 					"output":3,
@@ -46,7 +46,7 @@
 					"unlock":25,
 					"cost":{
 						"comrade":1,
-						"potato":100,
+						"indus":100,
 						"lastTier":10
 					},
 					"output":4,
@@ -101,7 +101,32 @@
 					"multiplier":5
 				}
 			],
-			"buildings":[]
+			"buildings":[
+				{
+					"name":"Chemist",
+					"unlock":1,
+					"cost":{
+						"comrade":1,
+						"indus":10,
+						"lastTier":0
+					},
+					"output":5,
+					"time":2,
+					"cards":[]
+				},
+				{
+					"name":"Launch Pad",
+					"unlock":250,
+					"cost":{
+						"comrade":1,
+						"indus":1000000,
+						"lastTier":10
+					},
+					"output":7,
+					"time":8,
+					"cards":[]
+				}
+			]
 		},
 		"Space Rocks":{
 			"cards":[],

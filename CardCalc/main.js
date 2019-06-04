@@ -1,3 +1,7 @@
+// https://adventurecommunist.fandom.com/wiki/Space
+// https://adventurecommunist.fandom.com/wiki/Crusade
+
+
 window.onload=main;
 async function main(){
 	var world, cworld,
@@ -28,7 +32,7 @@ async function main(){
 	}
 	wiHTML+="</tr></table>"
 	for (world in window.dat){
-		wiHTML+="<table id='"+world+"-button-wrap'><tr>"
+		wiHTML+="<table class='world-"+world+"' id='"+world+"-button-wrap'><tr>"
 		for (indus in window.dat[world]){
 			wiHTML+="<td><button onclick='setIndus(\""+world+"\", \""+indus+"\")'>"+indus+"</button></td>"
 		}
@@ -37,15 +41,15 @@ async function main(){
 	mainDiv.innerHTML+=wiHTML
 
 	for (world in window.dat){
-		mainDiv.innerHTML+="<table id='cards-"+world+"-wrap'></table>"
-		cardWrap=document.getElementById("cards-"+world+"-wrap");
+		mainDiv.innerHTML+="<table id='cards-world-"+world+"'></table>"
+		cardWrap=document.getElementById("cards-world-"+world);
 		cwHTML=""
 		cworld=window.dat[world];
-		cwHTML+="<table id='industry-"+world+"'><tr>" // Industry wrapper
+		cwHTML+="<table id='cards-industry-"+world+"'><tr>" // Industry wrapper
 		// Industry cards (discount and stuff)
 		for (indus in cworld){
 			cindus=cworld[indus];
-			cwHTML+="<td id='call-"+world+"-"+indus+"'>" // World type wrapper
+			cwHTML+="<td>" // World type wrapper
 			for (card in cindus["cards"]){
 				ccard=cindus["cards"][card];
 				cwHTML+="<table>" // Attribute wrapper
@@ -56,13 +60,14 @@ async function main(){
 				cwHTML+="</table>" // Close attributes
 			}
 			// Building specific cards
-			cwHTML+="<table id='cspe-"+world+"'><tr><td>"
+			cwHTML+="<table><tr><td>"
 			for (build in cindus["buildings"]){
 				cbuild=cindus["buildings"][build];
-				cwHTML+="<table id='cspe-"+world+"-"+build+"'>" // Building wrapper
+				cwHTML+="<table>" // Building wrapper
 				for (attr in cbuild){
-					if (attr=="cspe"){continue;}
 					cattr=cbuild[attr];
+					if (attr=="cards"){continue;}
+					//if (attr=="cost"){cattr=cattr["comrade"]+"c+"+cattr["indus"]+"i"+(cattr["lastTier"]!=0?"+"+cattr["lastTier"]+"t":"")}
 					cwHTML+="<tr><td>"+attr+":"+cattr+"</td></tr>"
 				}
 				cwHTML+="<tr><td><table>"
@@ -72,6 +77,7 @@ async function main(){
 						cattr=ccard[attr]
 						cwHTML+="<tr><td>"+attr+":"+cattr+"</td></tr>"
 					}
+					cwHTML+="<tr><td><input type='number' min='0' max='"+ccard["max-level"]+"'></input></td></tr>"
 				}
 				cwHTML+="</table></td></tr>"
 				cwHTML+="</table>"

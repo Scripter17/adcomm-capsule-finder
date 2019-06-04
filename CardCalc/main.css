@@ -14,9 +14,10 @@ box{
 	display:inline-block;
 }
 
-table{border:1px solid black; min-width:80%;}
+table{border:1px solid black; min-width:80%; background-color: white}
 table table{width:100%;}
-tr{border:1px solid orange;}
-td{border:1px solid blue;}
+/*tr{border:1px solid orange;}
+td{border:1px solid blue;}*/
+td{background-color:#CCCCCC;}
 table, tr, td{padding:4px;}
 td button{width:100%;}

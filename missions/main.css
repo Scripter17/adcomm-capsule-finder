@@ -1,0 +1,31 @@
+body{
+	background-color: #474646;
+	color:#E5E4E4;
+	font-family:arial;
+}
+#header{
+	text-align:center;
+}
+table, table td{
+	border:1px solid black;
+}
+table{
+	width:100%;
+	max-width:8in;
+}
+table td{
+	font-size:16px;
+}
+table td img{
+	height:1em;
+	vertical-align: middle;
+}
+tr.selected{
+	background-color:#759F84;
+}
+table td{
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}

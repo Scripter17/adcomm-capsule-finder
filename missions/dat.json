@@ -1,0 +1,26 @@
+{
+	"1":{
+		"missions":{
+			"1":{
+				"name":"Salt of the Earth!",
+				"requirement":"[@01] Collect 1,000 Farmers",
+				"reward":"[@00] 2,500 Potatoes"
+			},
+			"2":{
+				"name":"All Together Now!",
+				"requirement":"[@02] Collect 25 Communes",
+				"reward":"[@00] 5,000 Potatoes"
+			},
+			"3":{
+				"name":"More Potatoes, More Glory!",
+				"requirement":"[@00] Collect 100,000 Potatoes",
+				"reward":"[@g] 5 Gold"
+			},
+			"4":{
+				"name":"aaa",
+				"requirement":"bbb",
+				"reward":"ccc"
+			}
+		}
+	}
+}

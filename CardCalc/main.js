@@ -40,7 +40,7 @@ async function main(){
 				bm=0//boost[world][indus]["cards"][ccard["type"]]
 				beforeV=afterV="aa"
 				htmlTMP+="<table><tr><td>"+ccard["name"]+"</td></tr>"
-				htmlTMP+="<tr><td><input type='number' value='0' min='0' max='"+ccard["multiplier"].length+"' id='cardlev-"+world+"-"+indus+"-null-"+card+"'/></td></tr>"
+				htmlTMP+="<tr><td><input type='number' value='0' min='0' max='"+ccard["multiplier"].length+"' id='cardlev-"+world+"-"+indus+"-null-"+ccard["type"]+"'/></td></tr>"
 				htmlTMP+="</table>"
 			}
 			for (build in cindus["buildings"]){
@@ -58,7 +58,7 @@ async function main(){
 						}
 					}
 					//bm=null//boost[world][indus][build][ccard["type"]]
-					bm="<span id='bm-"+world+"-"+indus+"-"+build+"-"+card+"'>null</span>"
+					bm="<span id='bm-"+world+"-"+indus+"-"+build+"-"+boostType+"'>null</span>"
 					if (isCard){
 						//ccard=cbuild["cards"][card];
 						//bm=boost[world][indus][build][ccard[type]];
@@ -66,7 +66,7 @@ async function main(){
 						//console.log(ccard)
 						beforeV=afterV="aa"
 						htmlTMP+="<tr><td><table><tr><td>"+ccard["name"]+"</td></tr>"
-						htmlTMP+="<tr><td><input type='number' value='0' min='0' max='"+ccard["multiplier"].length+"' id='cardlev-"+world+"-"+indus+"-"+build+"-"+card+"'/></td></tr></table></td>"
+						htmlTMP+="<tr><td><input type='number' value='0' min='0' max='"+ccard["multiplier"].length+"' id='cardlev-"+world+"-"+indus+"-"+build+"-"+ccard["type"]+"'/></td></tr></table></td>"
 						htmlTMP+="<td><table><tr><td><img src='img/type-"+ccard["type"]+".png' alt='"+boostType+"'></td><td>"+bm+"</td></tr>"
 						if (boostType=="speed" || boostType=="power" || boostType=="discount"){
 							htmlTMP+="<tr><td>"+beforeV+"</td><td>"+afterV+"</td></tr>"
@@ -92,10 +92,35 @@ async function main(){
 	writeVals();
 }
 function writeVals(){
-	
+	var world, cworld,
+		indus, cindus,
+		build, cbuild,
+		boost, boostType;
+	boost=calcBoosts();
+	for (world in window.dat){
+		cworld=window.dat[world]
+		for (indus in cworld){
+			cindus=cworld[indus]
+			for (build in cindus["buildings"]){
+				cbuild=cindus["buildings"][build]
+				for (boostType in {"speed":0, "power":0, "chance":0, "boost":0, "discount":0}){
+					document.getElementById("bm-"+world+"-"+indus+"-"+build+"-"+boostType).innerHTML=boost[world][indus][build][boostType]
+				}
+			}
+		}
+	}
 }
 function getValue(world, indus, build, card){
-	return document.getElementById(world+"-"+indus+"-"+build+"-"+card).value
+	console.trace();
+	console.log(world, indus, build, card);
+	if (build==null){
+		var c=window.dat[world][indus]["cards"][card]
+	} else {
+		var c=window.dat[world][indus]["buildings"][build]["cards"][card]
+	}
+	console.log(c)
+	var e=document.getElementById("cardlev-"+world+"-"+indus+"-"+build+"-"+c["type"]);
+	return c["multiplier"][parseInt(e.value)];
 }
 function stackValues(a, b, type){
 	return a+b;
@@ -117,7 +142,7 @@ function calcBoosts(){
 				for (card in cbuild["cards"]){
 					// For every card in the building
 					ccard=cbuild["cards"][card]
-					console.log(world, indus, build, ccard["type"], ret[world][indus][build][ccard["type"]])
+					//console.log(world, indus, build, ccard["type"], ret[world][indus][build][ccard["type"]])
 					if (ret[world][indus][build][ccard["type"]]==undefined){
 						// If the value doesn't exist, write it
 						ret[world][indus][build][ccard["type"]]=getValue(world, indus, build, card)
@@ -125,15 +150,15 @@ function calcBoosts(){
 						// Properly add values
 						a=ret[world][indus][build][ccard["type"]];
 						b=getValue(world, indus, build, card)
-						ret[world][indus][build][ccard["type"]]=stackValues(a, b, ccard["type"])
+						ret[world][indus][build][ccard["type"]]=stackValues(a, b, card)
 					}
-					console.log(world, indus, build, ccard["type"], ret[world][indus][build][ccard["type"]])
+					//console.log(world, indus, build, ccard["type"], ret[world][indus][build][ccard["type"]])
 				}
 				for (card in cindus["cards"]){
 					ccard=cindus["cards"][card]
 //					for (build in cindus["buildings"]){
 						a=ret[world][indus][build][ccard["type"]];
-						b=getValue(world, indus, build, card)
+						b=getValue(world, indus, null, card)
 						ret[world][indus][build][ccard["type"]]=stackValues(a, b, ccard["type"])
 //					}
 				}

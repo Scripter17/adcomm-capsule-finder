@@ -1,0 +1,57 @@
+{
+	"main":[
+		{
+			"missions":[
+				{
+					"name":"Salt of the Earth!",
+					"requirement":"[@01] Collect 1,000 Farmers",
+					"reward":"[@00] 2,500 Potatoes"
+				},
+				{
+					"name":"All Together Now!",
+					"requirement":"[@02] Collect 25 Communes",
+					"reward":"[@00] 5,000 Potatoes"
+				},
+				{
+					"name":"More Potatoes, More Glory!",
+					"requirement":"[@00] Collect 100,000 Potatoes",
+					"reward":"[@g] 5 Gold"
+				}
+			]
+		},
+		{
+			"missions":[
+				{
+					"name":"Salt of the Earth!",
+					"requirement":"[@01] Collect 25 Farmers",
+					"reward":"[@cW] Wood Capsule"
+				},
+				{
+					"name":"Promote Researchers",
+					"requirement":"[@up] Upgrade 1 card",
+					"reward":"[@g] 5 Gold"
+				},
+				{
+					"name":"All Together Now!",
+					"requirement":"[@02] Collect 50 Communes",
+					"reward":"[@00] 5,000 Potatoes"
+				},
+				{
+					"name":"Spade and Trade",
+					"requirement":"Trade 1 Potato",
+					"reward":"[@sci] 10 Science"
+				},
+				{
+					"name":"On the Job Train-ing!",
+					"requirement":"[@03] Collect 10 Freights",
+					"reward":"[@cW] Wood Capsule"
+				},
+				{
+					"name":"More Potatoes, More Glory!",
+					"requirement":"[@00] Collect 5M Potatoes",
+					"reward":"[@g] 10 Gold"
+				}
+			]
+		}
+	]
+}

@@ -1,57 +1,168 @@
 {
-	"main":[
-		{
-			"missions":[
-				{
-					"name":"Salt of the Earth!",
-					"requirement":"[@01] Collect 1,000 Farmers",
-					"reward":"[@00] 2,500 Potatoes"
-				},
-				{
-					"name":"All Together Now!",
-					"requirement":"[@02] Collect 25 Communes",
-					"reward":"[@00] 5,000 Potatoes"
-				},
-				{
-					"name":"More Potatoes, More Glory!",
-					"requirement":"[@00] Collect 100,000 Potatoes",
-					"reward":"[@g] 5 Gold"
-				}
-			]
-		},
-		{
-			"missions":[
-				{
-					"name":"Salt of the Earth!",
-					"requirement":"[@01] Collect 25 Farmers",
-					"reward":"[@cW] Wood Capsule"
-				},
-				{
-					"name":"Promote Researchers",
-					"requirement":"[@up] Upgrade 1 card",
-					"reward":"[@g] 5 Gold"
-				},
-				{
-					"name":"All Together Now!",
-					"requirement":"[@02] Collect 50 Communes",
-					"reward":"[@00] 5,000 Potatoes"
-				},
-				{
-					"name":"Spade and Trade",
-					"requirement":"Trade 1 Potato",
-					"reward":"[@sci] 10 Science"
-				},
-				{
-					"name":"On the Job Train-ing!",
-					"requirement":"[@03] Collect 10 Freights",
-					"reward":"[@cW] Wood Capsule"
-				},
-				{
-					"name":"More Potatoes, More Glory!",
-					"requirement":"[@00] Collect 5M Potatoes",
+	"main":{
+		"type":"manual",
+		"ranks":[
+			{
+				"missions":[
+					{
+						"name":"Salt of the Earth!",
+						"requirement":"[@01] Collect 1,000 Farmers",
+						"reward":"[@00] 2,500 Potatoes"
+					},
+					{
+						"name":"All Together Now!",
+						"requirement":"[@02] Collect 25 Communes",
+						"reward":"[@00] 5,000 Potatoes"
+					},
+					{
+						"name":"More Potatoes, More Glory!",
+						"requirement":"[@00] Collect 100,000 Potatoes",
+						"reward":"[@g] 5 Gold"
+					}
+				]
+			},
+			{
+				"missions":[
+					{
+						"name":"Salt of the Earth!",
+						"requirement":"[@01] Collect 25 Farmers",
+						"reward":"[@cW] Wood Capsule"
+					},
+					{
+						"name":"Promote Researchers",
+						"requirement":"[@up] Upgrade 1 card",
+						"reward":"[@g] 5 Gold"
+					},
+					{
+						"name":"All Together Now!",
+						"requirement":"[@02] Collect 50 Communes",
+						"reward":"[@00] 5,000 Potatoes"
+					},
+					{
+						"name":"Spade and Trade",
+						"requirement":"Trade 1 Potato",
+						"reward":"[@sci] 10 Science"
+					},
+					{
+						"name":"On the Job Train-ing!",
+						"requirement":"[@03] Collect 10 Freights",
+						"reward":"[@cW] Wood Capsule"
+					},
+					{
+						"name":"More Potatoes, More Glory!",
+						"requirement":"[@00] Collect 5M Potatoes",
 					"reward":"[@g] 10 Gold"
-				}
-			]
-		}
-	]
+					}
+				]
+			}
+		]
+	},
+	"space":{
+		"type":"auto",
+		"ranks":[
+			{
+				"missions":[
+					{
+						"name":"???",
+						"requirement":"Collect 500 chemists",
+						"reward":"???"
+
+					},
+					{
+						"name":"???",
+						"requirement":"Upgrade 2 cards",
+						"reward":"???"
+
+					},
+					{
+						"name":"???",
+						"requirement":"Collect 83,838 fuel",
+						"reward":"???"
+
+					},
+					{
+						"name":"???",
+						"requirement":"Collect 20 launch pads",
+						"reward":"???"
+
+					},
+					{
+						"name":"???",
+						"requirement":"Collect 360M fuel",
+						"reward":"???"
+
+					},
+					{
+						"name":"???",
+						"requirement":"Collect 25 cards",
+						"reward":"???"
+
+					},
+					{
+						"name":"???",
+						"requirement":"Collect 77B fuel",
+						"reward":"???"
+
+					},
+					{
+						"name":"???",
+						"requirement":"Unlock exploration",
+						"reward":"???"
+
+					}
+				]
+			},
+			{
+				"missions":[
+					{
+						"name":"???",
+						"requirement":"Collect 55,555 launch pads",
+						"reward":"???"
+
+					},					{
+						"name":"???",
+						"requirement":"Spend 300 dark science",
+						"reward":"???"
+
+					},
+					{
+						"name":"???",
+						"requirement":"Collect 144T fuel",
+						"reward":"???"
+
+					},
+					{
+						"name":"???",
+						"requirement":"Trade 2 space rocks",
+						"reward":"???"
+
+					},
+					{
+						"name":"???",
+						"requirement":"Collect 50 cards",
+						"reward":"???"
+
+					},
+					{
+						"name":"???",
+						"requirement":"Collect 3M space rocks",
+						"reward":"???"
+
+					},
+					{
+						"name":"???",
+						"requirement":"Collect 88 rockets",
+						"reward":"???"
+
+					},
+					{
+						"name":"???",
+						"requirement":"Collect 92,343 technicians",
+						"reward":"???"
+
+					}
+				]
+			}
+		]
+	}
 }
